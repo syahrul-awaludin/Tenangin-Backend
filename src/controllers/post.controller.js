@@ -139,13 +139,22 @@ const addComment = async (req, res, next) => {
     // Cari tahu siapa pemilik post
     const post = await prisma.post.findUnique({ where: { id: postId } });
     if (post && post.authorId !== authorId) {
-      await prisma.notification.create({
+      const notif = await prisma.notification.create({
         data: {
           userId: post.authorId,
           senderId: authorId,
           type: 'COMMENT',
           postId: postId,
         },
+      });
+
+      // Trigger WebSockets Notification
+      req.app.get('io')?.to(`user:${post.authorId}`).emit('new_notification', {
+        id: notif.id,
+        type: 'COMMENT',
+        title: 'Komentar Baru',
+        body: `${comment.author.name} mengomentari postinganmu`,
+        postId: postId,
       });
     }
 
@@ -233,13 +242,24 @@ const toggleLike = async (req, res, next) => {
 
       const post = await prisma.post.findUnique({ where: { id: postId } });
       if (post && post.authorId !== userId) {
-        await prisma.notification.create({
+        const notif = await prisma.notification.create({
           data: {
             userId: post.authorId,
             senderId: userId,
             type: 'LIKE',
             postId: postId,
           },
+        });
+
+        const sender = await prisma.user.findUnique({ where: { id: userId } });
+        
+        // Trigger WebSockets Notification
+        req.app.get('io')?.to(`user:${post.authorId}`).emit('new_notification', {
+          id: notif.id,
+          type: 'LIKE',
+          title: 'Suka Baru',
+          body: `${sender?.name || 'Seseorang'} menyukai postinganmu`,
+          postId: postId,
         });
       }
     }
