@@ -12,6 +12,7 @@ const { apiLimiter, authLimiter, sensitiveLimiter } = require('./config/rateLimi
 const routes = require('./routes');
 const authRoutes = require('./routes/auth.routes');
 const postRoutes = require('./routes/post.routes');
+const notificationRoutes = require('./routes/notification.routes');
 const authenticate = require('./middleware/authenticate');
 const setupSwagger = require('./docs/swagger');
 
@@ -82,6 +83,7 @@ app.use('/api/v1/auth', authRoutes);
 // ─── API Routes yang dilindungi ─────────────────────────
 app.use('/api/v1', authenticate);
 app.use('/api/v1/posts', postRoutes);
+app.use('/api/v1/notifications', notificationRoutes);
 
 // ─── Swagger UI ─────────────────────────────────────────────
 setupSwagger(app);

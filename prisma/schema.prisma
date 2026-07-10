@@ -21,6 +21,8 @@ model User {
   comments     Comment[]
   likes        Like[]
   refreshTokens RefreshToken[]
+  notificationsReceived Notification[] @relation("UserNotifications")
+  notificationsSent     Notification[] @relation("NotificationSenders")
 }
 
 model Post {
@@ -36,6 +38,7 @@ model Post {
 
   comments  Comment[]
   likes     Like[]
+  notifications Notification[]
 }
 
 model Comment {
@@ -72,6 +75,18 @@ model RefreshToken {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   isRevoked Boolean  @default(false)
   expiresAt DateTime
-  createdAt DateTime @default(now())
 }
 
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String   // The user who receives the notification
+  senderId  String   // The user who triggered the notification
+  type      String   // "LIKE", "COMMENT"
+  postId    String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user      User     @relation("UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
+  sender    User     @relation("NotificationSenders", fields: [senderId], references: [id], onDelete: Cascade)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+}

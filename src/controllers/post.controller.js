@@ -100,6 +100,19 @@ const addComment = async (req, res, next) => {
       include: { author: { select: { id: true, name: true } } },
     });
 
+    // Cari tahu siapa pemilik post
+    const post = await prisma.post.findUnique({ where: { id: postId } });
+    if (post && post.authorId !== authorId) {
+      await prisma.notification.create({
+        data: {
+          userId: post.authorId,
+          senderId: authorId,
+          type: 'COMMENT',
+          postId: postId,
+        },
+      });
+    }
+
     res.status(201).json({ status: 'success', data: comment });
   } catch (error) {
     next(error);
@@ -152,6 +165,18 @@ const toggleLike = async (req, res, next) => {
       await prisma.like.delete({ where: { id: existingLike.id } });
     } else {
       await prisma.like.create({ data: { postId, userId } });
+
+      const post = await prisma.post.findUnique({ where: { id: postId } });
+      if (post && post.authorId !== userId) {
+        await prisma.notification.create({
+          data: {
+            userId: post.authorId,
+            senderId: userId,
+            type: 'LIKE',
+            postId: postId,
+          },
+        });
+      }
     }
 
     const totalLikes = await prisma.like.count({ where: { postId } });
