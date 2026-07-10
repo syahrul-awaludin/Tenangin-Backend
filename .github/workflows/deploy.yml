@@ -18,7 +18,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            cd ~/tenangin-backend || { git clone https://github.com/syahrul-awaludin/Tenangin-Backend.git ~/tenangin-backend && cd ~/tenangin-backend; }
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            cd ~/Tenangin-Backend || { git clone https://github.com/syahrul-awaludin/Tenangin-Backend.git ~/Tenangin-Backend && cd ~/Tenangin-Backend; }
             git pull origin main
             npm install --omit=dev
             npx prisma generate
