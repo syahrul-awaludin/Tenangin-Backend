@@ -11,7 +11,7 @@ const userRepository = {
 
   async findById(id) {
     return prisma.user.findUnique({
-      where: { id: Number(id) },
+      where: { id },
       select: { id: true, name: true, email: true, role: true, createdAt: true },
     });
   },

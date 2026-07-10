@@ -53,7 +53,7 @@ const authService = {
 
     // 3. Simpan user baru ke database
     const user = await prisma.user.create({
-      data: { name, email, password: hashedPassword },
+      data: { name, email, passwordHash: hashedPassword },
       select: { id: true, name: true, email: true, role: true, createdAt: true },
     });
 
@@ -76,7 +76,7 @@ const authService = {
     // 3. Verifikasi password dengan argon2
     let isValid = false;
     try {
-      isValid = await argon2.verify(user.password, password);
+      isValid = await argon2.verify(user.passwordHash, password);
     } catch (e) {
       // Akan masuk ke sini jika format user.password di DB tidak valid (misal seed data lama)
       isValid = false;
