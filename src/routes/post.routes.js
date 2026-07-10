@@ -87,6 +87,42 @@ router.put('/comments/:commentId', postController.editComment);
 /**
  * @swagger
  * /posts/{id}:
+ *   put:
+ *     summary: Edit post (Hanya Author)
+ *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - subject
+ *               - content
+ *             properties:
+ *               subject:
+ *                 type: string
+ *               content:
+ *                 type: string
+ *               mood:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Berhasil mengedit post
+ */
+router.put('/:id', postController.updatePost);
+
+/**
+ * @swagger
+ * /posts/{id}:
  *   delete:
  *     summary: Hapus post (Hanya Author atau Admin)
  *     tags: [Posts]

@@ -32,6 +32,39 @@ const createPost = async (req, res, next) => {
   }
 };
 
+const updatePost = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { subject, content, mood } = req.body;
+    const authorId = req.user.id;
+
+    // Pastikan post ada dan milik user tersebut
+    const post = await prisma.post.findUnique({ where: { id } });
+    if (!post) {
+      return res.status(404).json({ error: { code: 'NOT_FOUND', message: 'Post tidak ditemukan' } });
+    }
+    if (post.authorId !== authorId) {
+      return res.status(403).json({ error: { code: 'FORBIDDEN', message: 'Anda tidak memiliki akses untuk mengedit post ini' } });
+    }
+
+    const updatedPost = await prisma.post.update({
+      where: { id },
+      data: { subject, content, mood },
+      include: {
+        author: { select: { id: true, name: true } },
+      },
+    });
+
+    res.json({
+      status: 'success',
+      message: 'Post berhasil diubah',
+      data: updatedPost,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getPosts = async (req, res, next) => {
   try {
     const userId = req.user.id;
@@ -227,6 +260,7 @@ const toggleLike = async (req, res, next) => {
 
 module.exports = {
   createPost,
+  updatePost,
   getPosts,
   deletePost,
   addComment,
