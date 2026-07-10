@@ -67,7 +67,7 @@ enum Role {
 
 model RefreshToken {
   id        String   @id @default(uuid())
-  token     String   @unique
+  token     String   @db.VarChar(512) @unique
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   isRevoked Boolean  @default(false)
