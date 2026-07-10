@@ -23,6 +23,7 @@ const authenticate = (req, res, next) => {
 
     // 3. Tambahkan informasi user ke request untuk digunakan controller
     req.user = {
+      id: payload.userId,
       userId: payload.userId,
       email: payload.email,
       role: payload.role, // ← Tambahkan role
