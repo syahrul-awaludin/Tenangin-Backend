@@ -65,6 +65,32 @@ const options = {
             },
           },
         },
+        Notification: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', example: '123e4567-e89b-12d3-a456-426614174000' },
+            userId: { type: 'string', example: '123e4567-e89b-12d3-a456-426614174001' },
+            senderId: { type: 'string', example: '123e4567-e89b-12d3-a456-426614174002' },
+            type: { type: 'string', example: 'LIKE' },
+            postId: { type: 'string', example: '123e4567-e89b-12d3-a456-426614174003' },
+            isRead: { type: 'boolean', example: false },
+            createdAt: { type: 'string', format: 'date-time' },
+            sender: {
+              type: 'object',
+              properties: {
+                id: { type: 'string' },
+                name: { type: 'string' },
+              }
+            },
+            post: {
+              type: 'object',
+              properties: {
+                id: { type: 'string' },
+                subject: { type: 'string' },
+              }
+            }
+          }
+        },
       },
       securitySchemes: {
         bearerAuth: {
