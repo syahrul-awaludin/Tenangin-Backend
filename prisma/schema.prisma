@@ -20,6 +20,7 @@ model User {
   posts        Post[]
   comments     Comment[]
   likes        Like[]
+  refreshTokens RefreshToken[]
 }
 
 model Post {
@@ -63,3 +64,14 @@ enum Role {
   USER
   ADMIN
 }
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isRevoked Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
