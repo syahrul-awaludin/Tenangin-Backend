@@ -27,6 +27,7 @@ jobs:
             echo "JWT_ACCESS_SECRET=\"1d8e92a4f6b5c3d7e8f9a1b2c3d4e5f6\"" >> .env
             echo "JWT_REFRESH_SECRET=\"f6e5d4c3b2a1f9e8d7c6b5a43210abcd\"" >> .env
             git pull origin main
+            rm -rf node_modules/@prisma/client
             npm install --omit=dev
             PRISMA_CLIENT_ENGINE_TYPE=library npx prisma generate
             npx prisma db push --accept-data-loss
