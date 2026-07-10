@@ -29,4 +29,5 @@ jobs:
             npm install --omit=dev
             npx prisma generate
             npx prisma db push --accept-data-loss
-            pm2 restart tenangin-backend --update-env || pm2 start src/index.js --name "tenangin-backend" --update-env
+            pm2 delete tenangin-backend || true
+            pm2 start src/index.js --name "tenangin-backend"
