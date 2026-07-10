@@ -3,11 +3,12 @@ const prisma = new PrismaClient();
 
 const createPost = async (req, res, next) => {
   try {
-    const { content, mood } = req.body;
+    const { subject, content, mood } = req.body;
     const authorId = req.user.id; // From authenticate middleware
 
     const post = await prisma.post.create({
       data: {
+        subject,
         content,
         mood,
         authorId,
@@ -45,6 +46,7 @@ const getPosts = async (req, res, next) => {
 
     const formattedPosts = posts.map(post => ({
       id: post.id,
+      subject: post.subject,
       content: post.content,
       mood: post.mood,
       createdAt: post.createdAt,

@@ -24,8 +24,11 @@ const postController = require('../controllers/post.controller');
  *           schema:
  *             type: object
  *             required:
+ *               - subject
  *               - content
  *             properties:
+ *               subject:
+ *                 type: string
  *               content:
  *                 type: string
  *               mood:
