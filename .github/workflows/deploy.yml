@@ -21,6 +21,10 @@ jobs:
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             cd ~/Tenangin-Backend || { git clone https://github.com/syahrul-awaludin/Tenangin-Backend.git ~/Tenangin-Backend && cd ~/Tenangin-Backend; }
+            echo "PORT=4005" > .env
+            echo "DATABASE_URL=\"mysql://tenangin_user:Tenangin_DB!2026@localhost:3306/tenangin_db\"" >> .env
+            echo "JWT_ACCESS_SECRET=\"1d8e92a4f6b5c3d7e8f9a1b2c3d4e5f6\"" >> .env
+            echo "JWT_REFRESH_SECRET=\"f6e5d4c3b2a1f9e8d7c6b5a43210abcd\"" >> .env
             git pull origin main
             npm install --omit=dev
             npx prisma generate
