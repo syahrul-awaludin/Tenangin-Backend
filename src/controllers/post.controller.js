@@ -92,11 +92,14 @@ const deletePost = async (req, res, next) => {
 const addComment = async (req, res, next) => {
   try {
     const { postId } = req.params;
-    const { text } = req.body;
+    const { text, parentId } = req.body;
     const authorId = req.user.id;
 
+    const data = { text, postId, authorId };
+    if (parentId) data.parentId = parentId;
+
     const comment = await prisma.comment.create({
-      data: { text, postId, authorId },
+      data,
       include: { author: { select: { id: true, name: true } } },
     });
 
@@ -123,11 +126,40 @@ const getComments = async (req, res, next) => {
   try {
     const { postId } = req.params;
     const comments = await prisma.comment.findMany({
-      where: { postId },
+      where: { postId, parentId: null },
       orderBy: { createdAt: 'asc' },
-      include: { author: { select: { id: true, name: true } } },
+      include: { 
+        author: { select: { id: true, name: true } },
+        replies: {
+          include: { author: { select: { id: true, name: true } } },
+          orderBy: { createdAt: 'asc' }
+        }
+      },
     });
     res.status(200).json({ status: 'success', data: comments });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const editComment = async (req, res, next) => {
+  try {
+    const { commentId } = req.params;
+    const { text } = req.body;
+    const userId = req.user.id;
+
+    const comment = await prisma.comment.findUnique({ where: { id: commentId } });
+    if (!comment) return res.status(404).json({ error: { message: 'Komentar tidak ditemukan' } });
+    
+    if (comment.authorId !== userId) {
+      return res.status(403).json({ error: { message: 'Hanya author yang bisa edit komentar' } });
+    }
+
+    const updated = await prisma.comment.update({
+      where: { id: commentId },
+      data: { text },
+    });
+    res.status(200).json({ status: 'success', data: updated });
   } catch (error) {
     next(error);
   }
@@ -200,5 +232,6 @@ module.exports = {
   addComment,
   getComments,
   deleteComment,
+  editComment,
   toggleLike,
 };

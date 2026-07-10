@@ -55,6 +55,37 @@ router.get('/', postController.getPosts);
 
 /**
  * @swagger
+ * /posts/comments/{commentId}:
+ *   put:
+ *     summary: Edit komentar pada post (Hanya Author)
+ *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: commentId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - text
+ *             properties:
+ *               text:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Berhasil mengedit komentar
+ */
+router.put('/comments/:commentId', postController.editComment);
+
+/**
+ * @swagger
  * /posts/{id}:
  *   delete:
  *     summary: Hapus post (Hanya Author atau Admin)
