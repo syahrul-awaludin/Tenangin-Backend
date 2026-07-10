@@ -19,6 +19,7 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           script: |
             export NVM_DIR="$HOME/.nvm"
+            export PRISMA_CLIENT_ENGINE_TYPE=library
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             cd ~/Tenangin-Backend || { git clone https://github.com/syahrul-awaludin/Tenangin-Backend.git ~/Tenangin-Backend && cd ~/Tenangin-Backend; }
             echo "PORT=4005" > .env
