@@ -48,6 +48,43 @@ src/
 
 ---
 
+## 📡 API Endpoints Reference
+
+Semua *endpoint* memiliki *base URL*: `/api/v1`
+
+### 1. Authentication (`/auth`)
+| Method | Endpoint | Keterangan | Auth Required |
+|--------|----------|------------|---------------|
+| `POST` | `/auth/register` | Mendaftarkan pengguna baru. | ❌ No |
+| `POST` | `/auth/login` | Login pengguna dan mengembalikan JWT Token. | ❌ No |
+| `POST` | `/auth/refresh` | Mengambil token baru menggunakan *refresh token*. | ❌ No |
+
+### 2. Posts & Community (`/posts`)
+| Method | Endpoint | Keterangan | Auth Required |
+|--------|----------|------------|---------------|
+| `GET`  | `/posts` | Mengambil daftar semua postingan komunitas. | ✅ Yes |
+| `POST` | `/posts` | Membuat postingan baru (Body: `subject`, `content`, `mood`). | ✅ Yes |
+| `PUT`  | `/posts/:id` | Mengedit postingan (Hanya Author). | ✅ Yes |
+| `DELETE`| `/posts/:id` | Menghapus postingan (Hanya Author / Admin). | ✅ Yes |
+| `POST` | `/posts/:postId/like` | Memberikan atau membatalkan *like* (Toggle Like). | ✅ Yes |
+
+### 3. Comments
+| Method | Endpoint | Keterangan | Auth Required |
+|--------|----------|------------|---------------|
+| `GET`  | `/posts/:postId/comments` | Mengambil komentar dari suatu postingan. | ✅ Yes |
+| `POST` | `/posts/:postId/comments` | Menambahkan komentar ke postingan tertentu. | ✅ Yes |
+| `PUT`  | `/posts/comments/:commentId`| Mengedit komentar (Hanya Author). | ✅ Yes |
+| `DELETE`| `/posts/comments/:commentId`| Menghapus komentar. | ✅ Yes |
+
+### 4. Notifications (`/notifications`)
+| Method | Endpoint | Keterangan | Auth Required |
+|--------|----------|------------|---------------|
+| `GET`  | `/notifications` | Mendapatkan daftar notifikasi pengguna saat ini. | ✅ Yes |
+| `PUT`  | `/notifications/:id/read` | Menandai satu notifikasi sebagai "dibaca". | ✅ Yes |
+| `PUT`  | `/notifications/read-all` | Menandai seluruh notifikasi sebagai "dibaca". | ✅ Yes |
+
+---
+
 ## 🚀 Instalasi & Menjalankan di Lokal
 
 Jika Anda ingin menjalankan atau mengembangkan backend ini di komputer lokal, ikuti langkah berikut:
