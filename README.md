@@ -2,9 +2,9 @@
 
 Ini adalah repositori **Backend Server** (RESTful API) yang digunakan untuk mendukung aplikasi *mobile* **Tenangin**. Backend ini dibangun menggunakan arsitektur modern untuk memastikan performa yang cepat, aman, dan mudah di-*scale*.
 
-Repositori aplikasi Mobile (Frontend/Flutter) dapat diakses di sini: [Tenangin App (Flutter)](https://github.com/syahrul-awaludin/UTS-Mobile-Computing-Tenangin-App)
-
----
+## 🔗 Tautan Penting
+- **Mobile App Repository:** [Tenangin App (Flutter)](https://github.com/syahrul-awaludin/UTS-Mobile-Computing-Tenangin-App)
+- **Live API Docs (Swagger):** [https://tenangin.syahrulawaludin.my.id/api/docs](https://tenangin.syahrulawaludin.my.id/api/docs)
 
 ## 💻 Tech Stack & Dependencies
 
